@@ -148,6 +148,10 @@ def _get_activity(organization_name, include_sub_organizations, periods):
 
 
 def last_resource_deleted(pkg):
+    # CKAN >= 2.9 non espone più le tabelle di revisione (ResourceRevision, Revision, ...)
+    # In tal caso non possiamo recuperare la data dell'ultima cancellazione risorsa.
+    if not hasattr(model, 'ResourceRevision'):
+        return None, ''
 
     #    .join(model.ResourceGroup) \
     resource_revisions = model.Session.query(model.ResourceRevision) \
